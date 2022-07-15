@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WEB API</title>
+</head>
+
+<body>
+
+  <script>
+    var permission = Notification.requestPermission();
+
+
+    Notification.requestPermission().then(function(result) {
+      console.log(result);
+    });
+
+    
+    //알림 권한 요청
+    function getNotificationPermission() {
+      // 브라우저 지원 여부 체크
+      if (!("Notification" in window)) {
+        alert("데스크톱 알림을 지원하지 않는 브라우저입니다.");
+      }
+      // 데스크탑 알림 권한 요청
+      Notification.requestPermission(function(result) {
+        // 권한 거절
+        if (result == 'denied') {
+          Notification.requestPermission();
+          alert('알림을 차단하셨습니다.\n브라우저의 사이트 설정에서 변경하실 수 있습니다.');
+          return false;
+        } else if (result == 'granted') {
+          alert('알림을 허용하셨습니다.');
+        }
+      });
+    }
+
+
+
+    function spawnNotification(body, icon, title) {
+      const options = {
+        body: body,
+        icon: icon
+      }
+      const notification = new Notification(title, options);
+    }
+
+    var i = 0;
+    setInterval(() => {
+        spawnNotification('테스트 알림'+i,'./img/sample_01.jpg','영진'+i);
+      i++
+    }, 10000);
+
+  </script>
+
+  <button id="enable" onclick="getNotificationPermission()">알림 체크</button>
+
+  <script>
+
+  </script>
+
+</body>
+
+</html>
